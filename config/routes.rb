@@ -11,8 +11,8 @@ Rails.application.routes.draw do
       resources 'users_projects'
       resources 'users'
       post 'update_leader' => 'projects#update_leader'
-      get 'users_projects_detail' => 'projects#users_projects_detail'
       get 'change_leader' => 'projects#change_leader'
+      get 'users_projects_detail' => 'projects#users_projects_detail'
       get 'done_project' => 'projects#done_project'
       get 'click' => 'departments#click'
     end

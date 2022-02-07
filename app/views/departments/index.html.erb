@@ -3,7 +3,7 @@
   <table>
     <% @departments.each do |department| %>
       <tr>
-        <td><%= link_to department.name, {:action => 'click', :id => department.id} %></td>
+        <td><%= link_to department.name, { :action => 'click', :id => department.id } %></td>
         <% if current_user.role.role_name_id == 1 %>
           <td><%= link_to 'Edit', { :action => 'edit', :id => department.id } %></td>
           <td><%= link_to 'Delete', department, :method => :delete, :data => { :confirm => "You Sure?" } %></td>
@@ -13,10 +13,16 @@
   </table>
   <%= link_to 'Add department', { :action => 'new' } %>
 <% else %>
-  <table>
-    <tr>
-      <td><%= link_to @departments.name, {:action => 'click', :id => @departments.id} %></td>
-    </tr>
-  </table>
+  <% if @departments[0] != nil %>
+    <table>
+      <tr>
+        <td><%= link_to @department.name, { :action => 'click', :id => @department.id } %></td>
+      </tr>
+    </table>
+  <% else %>
+    <h1> You do not have a department </h1>
+  <% end %>
 <% end %>
+
 <%= link_to "Sign out", sign_out_path %>
+

@@ -1,18 +1,20 @@
 class DepartmentsController < ApplicationController
+  before_action :check_role
+
   def index
     if current_user.role.role_name_id == 1 || current_user.role.role_name_id == 2
       @departments = Department.all
     else
       @departments = UsersDepartment.where(user_id: current_user.id)
-      @departments.each do |department|
-        @departments = Department.find(department.department_id)
+      if @departments[0] != nil
+        @department = Department.find(@departments[0].department_id)
       end
     end
 
   end
 
   def new
-    @users = User.where('has_department = false')
+    @users = User.where(has_department: false)
     @department = Department.new
   end
 
@@ -30,12 +32,19 @@ class DepartmentsController < ApplicationController
 
   def edit
     @department = Department.find(params[:id])
+    @users = User.where(has_department: false)
   end
 
   def update
     @department = Department.find(params[:id])
+    current_leader = @department.user_id
     if @department.update(name: params['department']['name'])
-      redirect_to action: :index
+      if add_user_department(params['department']['user_id'])
+        if update_role_PM(params['department']['user_id'])
+          return_role(current_leader)
+          redirect_to action: :index
+        end
+      end
     end
   end
 
@@ -66,7 +75,11 @@ class DepartmentsController < ApplicationController
     @user.save
     @role = Role.where(user_id: user_id)
     @role.update(role_name_id: 3)
-    @role.save
+  end
+
+  def return_role (current_leader)
+    @role = Role.where(user_id: current_leader)
+    @role.update(role_name_id: 4)
   end
 
 end
