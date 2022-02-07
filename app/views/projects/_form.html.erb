@@ -1,0 +1,7 @@
+<%= form_with(model: @project, local: true) do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <%= f.label :department_id %>
+  <%= f.collection_select(:department_id, @departments, :id, :name, prompt: true)%>
+  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+<% end %>

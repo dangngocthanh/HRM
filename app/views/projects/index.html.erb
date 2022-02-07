@@ -1,0 +1,15 @@
+<% @projects.each do |project| %>
+  <table>
+    <% if project.status != 0 %>
+      <tr>
+        <td><%= link_to project.name, { :action => 'users_projects_detail', :id => project.id } %>
+          (<%= User.find(project.user_id).email %>)
+        </td>
+        <% if current_user.role_id == 1 || current_user.role_id == 3 %>
+          <td><%= link_to 'Change leader', { :action => 'change_leader', :id => project.id } %></td>
+          <td><%= link_to 'Done project', { :action => 'done_project', :id => project.id } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
